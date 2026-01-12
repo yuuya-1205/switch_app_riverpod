@@ -18,13 +18,14 @@ void main() {
   test(
     'switchRepositoryからデータを取得し、SwitchDtoからSwitchStateに変換するできているか確認する',
     () async {
-      // Repository の getSwitchIsEnabled() が返す Futureをモックする。
+      // mockSwitchRepositoryのgetSwitchIsEnabled()メソッドが返す Futureをモックする。
       when(
         mockSwitchRepository.getSwitchIsEnabled(documentId: documentId),
       ).thenAnswer((_) => Future.value(SwitchDto(isEnabled: false)));
 
       // refの代わりにcreateContainerを使用する。
-      // 理由：createContainerを使用することでmockを使用することができる。（置き換えることができる）
+      // 理由：createContainerを使用することでmockSwitchRepositoryを使用することができる。（置き換えることができる）
+      // providerContainerがProviderのインスタンスを管理するためのコンテナなのでこれを使用している。
       final container = createContainer(
         overrides: [
           switchRepositoryProvider.overrideWith((_) => mockSwitchRepository),
@@ -32,6 +33,10 @@ void main() {
       );
 
       // 初期化してインスタンスを作成する。
+      // ref.readはProviderのインスタンスを取得するためのメソッドである。
+      // ではref.watchは？監視してBuildメソッドを更新するためのメソッドである。
+      // ref.watchはProviderのインスタンスを監視するためのメソッドである。
+      // ref.readとref.watchの違いは？
       final switchState = await container.read(switchNotifierProvider.future);
 
       // SwitchState（isEnabled: false）になっていることを確認する。
@@ -91,3 +96,11 @@ void main() {
     );
   });
 }
+      // ではref.listenは？
+      // ref.listenはProviderのインスタンスを監視するためのメソッドである。
+      // ではref.onDisposeは？
+      // ref.onDisposeはProviderのインスタンスを破棄するためのメソッドである。
+      // ではref.onChangeは？
+      // ref.onChangeはProviderのインスタンスが変更された時に呼ばれるメソッドである。
+      // ではref.onErrorは？
+      // ref.onErrorはProviderのインスタンスがエラーになった時に呼ばれるメソッドである。
