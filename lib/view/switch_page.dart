@@ -11,7 +11,8 @@ class SwitchPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // switchNotifierProviderからSwitchStateを取得する。
+    // switchNotifierProviderからSwitchStateを取得する。???これは違うかな。
+    // SwitchNotifierのインスタンスを監視している。？
     final switchState = ref.watch(switchNotifierProvider);
     return Scaffold(
       appBar: AppBar(title: const Text('Switch Page')),
@@ -22,19 +23,7 @@ class SwitchPage extends ConsumerWidget {
             children: [
               Row(
                 children: [
-                  Text(
-                    'enabled',
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
-
-                      // 使用できない場合はトーンダウンしているように見せたいのでグレーで表示
-                      // 使用できる場合は黒にする
-                      color: switchState.isEnabled
-                          ? Colors.black
-                          : Colors.grey[400],
-                    ),
-                  ),
+                  Text('enabled'),
                   Spacer(),
                   Switch(
                     value: switchState.isEnabled,
@@ -44,24 +33,9 @@ class SwitchPage extends ConsumerWidget {
                             .read(switchNotifierProvider.notifier)
                             .switchOff();
                       } else {
-                        try {
-                          await ref
-                              .read(switchNotifierProvider.notifier)
-                              .switchOn();
-                        } catch (e) {
-                          await showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: Text('SwitchをOnにしました'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.pop(context),
-                                  child: Text('Cancel'),
-                                ),
-                              ],
-                            ),
-                          );
-                        }
+                        await ref
+                            .read(switchNotifierProvider.notifier)
+                            .switchOn();
                       }
                     },
                   ),
