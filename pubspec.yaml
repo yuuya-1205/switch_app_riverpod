@@ -15,7 +15,6 @@ dependencies:
   flutter_riverpod: ^2.6.1
   firebase_core: ^4.2.1
   cloud_firestore: ^6.1.1
-  riverpod_annotation: ^2.6.1
   json_serializable:
   freezed_annotation:
   mockito: ^5.4.4

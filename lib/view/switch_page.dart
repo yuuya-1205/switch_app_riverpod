@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:switch_app_riverpod/domain/logic/switch_notifier.dart';
+import 'package:switch_app_riverpod/domain/logic/switch_notifier_second.dart';
 
 /// SwitchPageクラス
 ///
@@ -13,7 +13,7 @@ class SwitchPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // switchNotifierProviderからSwitchStateを取得する。???これは違うかな。
     // SwitchNotifierのインスタンスを監視している。？
-    final switchState = ref.watch(switchNotifierProvider);
+    final switchState = ref.watch(switchNotifierSecondProvider);
     return Scaffold(
       appBar: AppBar(title: const Text('Switch Page')),
       body: switchState.when(
@@ -30,20 +30,17 @@ class SwitchPage extends ConsumerWidget {
                     onChanged: (value) async {
                       if (switchState.isEnabled) {
                         await ref
-                            .read(switchNotifierProvider.notifier)
+                            .read(switchNotifierSecondProvider.notifier)
                             .switchOff();
                       } else {
                         await ref
-                            .read(switchNotifierProvider.notifier)
+                            .read(switchNotifierSecondProvider.notifier)
                             .switchOn();
                       }
                     },
                   ),
                 ],
               ),
-              const SizedBox(height: 16.0),
-              // ここにIndicatorを表示する。
-              if (switchState.isEnabled) const Text('使えるよ！'),
             ],
           ),
         ),
